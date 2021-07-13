@@ -1,45 +1,4 @@
-/*
- * Building: 
- *     clang++ -g -O1 \
- *       -I/usr/local/Cellar/llvm/12.0.0_1/include          \
- *       -I/usr/local/Cellar/libxml2/2.9.12/include/libxml2 \
- *       -L/usr/local/Cellar/libxml2/2.9.12/lib             \
- *       -lxml2                                             \
- *       -std=c++14                                         \
- *       -stdlib=libc++                                     \
- *       -D__STDC_CONSTANT_MACROS                           \
- *       -D__STDC_FORMAT_MACROS                             \
- *       -D__STDC_LIMIT_MACROS                              \
- *       -fsanitize=fuzzer                                  \
- *       -o fuzzer                                          \
- *       target.cpp
- *
- * Running:
- *     # file: run.sh
- *
- *     # Set AddressSanitizer options via env var
- *     ASAN_OPT="strict_string_checks=1"
- *     ASAN_OPT="${ASAN_OPT}:detect_stack_use_after_return=1"
- *     ASAN_OPT="${ASAN_OPT}:check_initialization_order=1"
- *     ASAN_OPT="${ASAN_OPT}:strict_init_order=1"
- *     
- *     # Note: You can also just `export ASAN_OPTIONS="${ASAN_OPT}"`
- *     ASAN_OPTIONS="${ASAN_OPT}" \
- *     ./fuzzer \
- *       \ # CSV list of input seeds
- *       -seed_inputs="/path/to/seed1,/path/to/seed/2" \
- *       \ # File format definition, if exists
- *       -dict=/path/to/xml.dict                       \
- *       \ # Max length of input buffer
- *       -max_len=4096                                 \
- *       \ # Number of fuzzing jobs to run
- *       -jobs=1                                       \
- *       \ # Number of simultaneous worker processes
- *       -workers=1                                    \
- *       \ # Directory to store transient corpus samples
- *       /path/to/corpus_dir
- *
- */
+// target.cpp
 
 // Include library APIs for any relevant functions, structs, enums, namespaces
 #include <stdio.h>
@@ -110,3 +69,46 @@ int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
     fuzz_trgt(data, size);
     return 0;
 }
+
+
+/*
+ * Building: 
+ *     clang -g -O1 \
+ *       -I/usr/local/Cellar/llvm/12.0.0_1/include          \
+ *       -I/usr/local/Cellar/libxml2/2.9.12/include/libxml2 \
+ *       -L/usr/local/Cellar/libxml2/2.9.12/lib             \
+ *       -lxml2                                             \
+ *       -std=c++14                                         \
+ *       -stdlib=libc++                                     \
+ *       -D__STDC_CONSTANT_MACROS                           \
+ *       -D__STDC_FORMAT_MACROS                             \
+ *       -D__STDC_LIMIT_MACROS                              \
+ *       -fsanitize=fuzzer                                  \
+ *       -o fuzzer                                          \
+ *       target.cpp
+ *
+ * Running:
+ *     # file: run.sh
+ *
+ *     # Set AddressSanitizer options via env var
+ *     ASAN_OPT="strict_string_checks=1"
+ *     ASAN_OPT="${ASAN_OPT}:detect_stack_use_after_return=1"
+ *     ASAN_OPT="${ASAN_OPT}:check_initialization_order=1"
+ *     ASAN_OPT="${ASAN_OPT}:strict_init_order=1"
+ *     
+ *     # Note: You can also just `export ASAN_OPTIONS="${ASAN_OPT}"`
+ *     ASAN_OPTIONS="${ASAN_OPT}" \
+ *     ./fuzzer \
+ *       \ # CSV list of input seeds
+ *       -seed_inputs="/path/to/seed1,/path/to/seed/2" \
+ *       \ # File format definition, if exists
+ *       -dict=/path/to/xml.dict                       \
+ *       \ # Max length of input buffer
+ *       -max_len=4096                                 \
+ *       \ # Number of fuzzing jobs to run
+ *       -jobs=1                                       \
+ *       \ # Number of simultaneous worker processes
+ *       -workers=1                                    \
+ *       \ # Directory to store transient corpus samples
+ *       /path/to/corpus_dir
+ */
